@@ -1,3 +1,5 @@
+# libvips
+# 
 SUMMARY = "Libvips image processing library"
 DESCRIPTION = "libvips is a fast, memory-efficient image processing library."
 HOMEPAGE = "https://www.libvips.org/"
@@ -13,6 +15,20 @@ S = "${WORKDIR}/git"
 SRC_URI = "git://github.com/libvips/libvips.git;protocol=https;branch=master"
 SRCREV = "${AUTOREV}"
 
-DEPENDS = "glib-2.0 expat"
+DEPENDS = "glib-2.0 expat libjpeg-turbo libjxl libexif tiff libpng libwebp fftw libraw openjpeg"
 
+# TODO: heif, EXR, imagequant, raw
 inherit meson pkgconfig
+EXTRA_OEMESON = "\
+    -Djpeg=enabled \
+    -Djpeg-xl=enabled \
+    -Dexif=enabled \
+    -Dtiff=enabled \
+    -Dpng=enabled \
+    -Dwebp=enabled \
+    -Dfftw=enabled \
+    -Draw=disabled \
+    -Dopenjpeg=enabled \
+"
+
+FILES:${PN} += "${libdir}/vips-modules-8.19/*.so"
